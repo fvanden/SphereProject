@@ -6,4 +6,5 @@ dependencies:
   - numpy
   - matplotlib
   - ipywidgets
+  - netCDF4
 
