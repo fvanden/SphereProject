@@ -268,7 +268,7 @@ MY_POLARNAMES = {
 
         # Metadata for polarimetric short and long names
 
-    'Zh' : ['Reflectivity','Reflectivity','dBZ', -10, 40.,1.],
+    'Zh' : ['Reflectivity','Reflectivity','dBZ', 0., 55.,1.],
     'Zhc' : ['Corr refl', 'Corrected_ReflectivityH','dBZ', 0., 55., 1.],
     'Zdr' : ['Diff. reflectivity','Differential reflectivity', 'dB', -1., 5.,0.1],
     'Zdrc': ['Corr. Diff. reflectivity','Corrected_Differential_Reflectivity','dB',-1., 5.,0.1],
@@ -282,7 +282,7 @@ MY_POLARNAMES = {
     'ZdrCorr' : ['Att corr. diff. reflectivity.','Attenuation corrected reflectivity','dB', 0., 3., 0.1],
     'RVel' : ['Mean doppler velocity','Mean doppler velocity','m/s', -15., 15.,0.5],
     'Sw' : ['Spectral Width','Spectral Width','m2/s2', 0., 3., 0.1],
-    'Zv' : ['Vert. reflectivity', 'Vertical reflectivity','dBZ', -10., 40., 1.],
+    'Zv' : ['Vert. reflectivity', 'Vertical reflectivity','dBZ', 0., 45., 1.],
     'Clut' : ['Clutter', 'Output clutter algorithm','-',0.,100.,10.], 
     'TEMP' : ['Temperature', 'Cosmo temperature field','Celcius',-60,60,1.],
     'TYPECLUS2' : ['Hydroclass', 'Hydrometeor_type_from_Besic1','-',0.,200.,25.],

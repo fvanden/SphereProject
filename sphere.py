@@ -281,7 +281,7 @@ class GaussSphere():
         
         ax4.text(0.5,-0.4, axtext, fontsize = 7)
             
-    def plot_selection(self, polvar = None):
+    def plot_selection(self, polvar = None, title = None):
         """
         plots a figure indicating the data which was selected to perform the
         2D gaussian fit (only valid for plot_all function)
@@ -302,28 +302,33 @@ class GaussSphere():
             pldata = self.data[self.gate]
         else:
             pldata = self.file_handle.variables[polvar][self.gate]
-        
+            
         # find max min values
-        
-        if self.var == 'SignalH':
-            vmin = min(self.data[self.gate])
-            vmax = max(self.data[self.gate])
-        elif self.var == 'Zh':
-            vmin = -10.
-            vmax = 40.
-        elif polvar is not None:
+        if polvar is not None:
             metadata = generate_polvar_metadata(polvar)
             vmin = metadata['valid_min']
             vmax = metadata['valid_max']
+            cbartitle = metadata['long_name']
+        elif self.var == 'SignalH':
+            vmin = min(self.data[self.gate])
+            vmax = max(self.data[self.gate])
+        
+        elif self.var == 'Zh':
+            vmin = -10.
+            vmax = 40.
+            cbartitle = 'Reflectivity [dBZ]'
         else:
             metadata = generate_polvar_metadata(self.var)
             vmin = metadata['valid_min']
             vmax = metadata['valid_max']
+            cbartitle = metadata['long_name']
             
         fig = plt.figure()
         plt.hold(True)
         plt.scatter(self.azimuth, self.elevation, c=pldata, marker = 's', cmap = plt.cm.jet,
                     vmin = vmin, vmax = vmax)
+        cbar = plt.colorbar()
+        cbar.set_label(cbartitle)
         plt.scatter(np.take(self.azimuth, ind), np.take(self.elevation,ind), marker = 'o', 
                     facecolors='none', edgecolors='w') 
         plt.plot(self.azim_sphere, self.elev_sphere, color = 'k')
@@ -331,7 +336,11 @@ class GaussSphere():
         plt.xlabel('Azimuth')
         plt.ticklabel_format(useOffset=False)
         plt.ylabel('Elevation')
-        plt.title( ("selected data for radius sphere: %f and maxval: %f")%(self.doa, self.cutdB) )
+        if title is None:
+            plt.title( ("selected data for radius sphere: %f and maxval: %f")%(self.doa, self.cutdB) )
+        else:
+            plt.title(title)
+            
         
     def plot_gauss(self, ax = None):
         """

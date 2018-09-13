@@ -19,7 +19,7 @@ Created on Wed Oct 19 12:01:19 2016
 # for 30 m resolution: 39 to 44
 # for 15 m resolution: 78 to 85  
 
-def simpleScatter(filename, polvar = 'Zh', range_g = None):
+def simpleScatter(filename, polvar = 'Zh', range_g = None, marker = 's'):
     """
     Creates a scatter plot of the sphere calibration data
     
@@ -76,6 +76,11 @@ def simpleScatter(filename, polvar = 'Zh', range_g = None):
         vmin = np.nanmin(data)
         vmax = np.nanmin(data)
         print(vmin, vmax)
+        
+    if polvar == 'Zh':
+        polvarlabel = 'Reflectivity [dBZ]'
+    else:
+        polvarlabel = polvar
     
     # plot data #
 
@@ -84,23 +89,26 @@ def simpleScatter(filename, polvar = 'Zh', range_g = None):
     if range_g is None:     
     
         for r in range(min_gate,max_gate):
-            plt.figure()
-            plt.scatter(azimuth,elevation,c=data[r], marker = 's', cmap = cm.jet, vmin = vmin, vmax =vmax)
+            fig, ax = plt.subplots()
+            plt.scatter(azimuth,elevation,c=data[r], marker = marker, cmap = cm.jet, vmin = vmin, vmax =vmax)
             cbar = plt.colorbar()
-            cbar.set_label(polvar)
+            cbar.set_label(polvarlabel)
             plt.title('range' + str(range_r[r]))
             plt.xlabel('Azimuth')
             plt.ylabel('Elevation')
     else:
-        plt.figure()
-        plt.scatter(azimuth,elevation,c=data[range_g], marker = 's', cmap = cm.jet, vmin = vmin, vmax =vmax)
+        fig, ax = plt.subplots()
+        plt.scatter(azimuth,elevation,c=data[range_g], marker = marker, cmap = cm.jet, vmin = vmin, vmax =vmax)
         cbar = plt.colorbar()
-        cbar.set_label(polvar)
+        cbar.set_label(polvarlabel)
         plt.title('range' + str(range_r[range_g]))
         plt.xlabel('Azimuth')
         plt.ylabel('Elevation')
+        
+    
 
-def calibInterp(filename, polvar = 'Zh', gate = None, res_azim_interp = 0.4, res_elev_interp = 0.5):
+
+def calibInterp(filename, polvar = 'Zh', gate = None, res_azim_interp = 0.4, res_elev_interp = 0.5, title = None):
     """
     Interpolates sphere calibration to a regular grid (very simple nearest
     neighbour interpolation, requires amelioration) and plots a contour plot
@@ -262,7 +270,7 @@ def calibInterp(filename, polvar = 'Zh', gate = None, res_azim_interp = 0.4, res
     fig = plt.figure()
     ax = fig.add_subplot(111)
     
-    plt.text(0.2, 0.85,mytext,
+    plt.text(0.23,0.8,mytext,
          fontdict = {'color':'w', 'weight': 'bold', 'fontsize' : 12, 'multialignment': 'left'},
          horizontalalignment='center',
          verticalalignment='center',
@@ -271,7 +279,12 @@ def calibInterp(filename, polvar = 'Zh', gate = None, res_azim_interp = 0.4, res
     CS = plt.contourf(X,Y,data_grid, cmap = cm.jet, vmin = vmin, vmax =vmax)
     plt.xlabel('Azimuth')
     plt.ylabel('Elevation')
-    plt.title(file)
+    
+    if title is None:
+        plt.title(file)
+    else:
+        plt.title(title)
+        
     cbar = plt.colorbar()
     cbar.set_label(polvar, rotation=90)
     
